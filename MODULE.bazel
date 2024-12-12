@@ -1,0 +1,21 @@
+module(
+    name = "example",
+    version = "0.0.1",
+)
+
+bazel_dep(name = "rules_jvm_external", version = "6.6")
+bazel_dep(name = "rules_java", version = "8.6.2")
+
+maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+maven.install(
+    name = "maven",
+    artifacts = [
+        "org.projectlombok:lombok:1.18.36",
+    ],
+    fail_if_repin_required = True,
+    fetch_sources = True,
+    generate_compat_repositories = True,
+    lock_file = "//:maven_install.json",
+    version_conflict_policy = "pinned",
+)
+use_repo(maven, "maven")
